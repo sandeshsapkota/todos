@@ -24,7 +24,7 @@
     "**/*.ts",
     "**/*.tsx",
     "module.d.ts",
-    "src/**/*"
+    "src/**/*.tsx"
   ],
   "exclude": ["node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]

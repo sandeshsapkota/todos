@@ -8,6 +8,7 @@ const Header = () => {
 
     const [address, setAddress] = useState("")
     const [balance, setBalance] = useState<string | null>(null)
+    const [error, setError] = useState(false)
 
     const isWindowAndHasMetaTask = typeof window !== 'undefined' && typeof window.ethereum !== 'undefined';
 
@@ -15,6 +16,7 @@ const Header = () => {
 
         if (isWindowAndHasMetaTask) {
             /* has installed    */
+            setError(false)
             try {
                 const accounts = await window.ethereum.request({method: 'eth_requestAccounts'})
                 const id = accounts[0]
@@ -24,7 +26,8 @@ const Header = () => {
             }
         } else {
             /* has not installed    */
-            console.warn('Error while connecting to the wallet.')
+            setError(true)
+            console.warn('Meta has not installed')
         }
     }
 
@@ -91,11 +94,20 @@ const Header = () => {
     return (
         <header className={"bg-white  px-4 py-4"}>
             <div className="container grid gap-4 md:flex items-center justify-between">
-                {balance && <h3 className={'text-lg font-semibold '}>Your balance is : <b>{balance}</b></h3>}
+                {balance ? <h3 className={'text-lg font-semibold '}>Your balance is : <b>{balance}</b></h3> :
+                    <h3 className={'font-semibold text-lg'}>My Todos</h3>}
                 <div className="ml-auto font-bold flex items-center gap-3" title={address}>
+                    {error && <div className={"bg-red-100 text-red-600 rounded px-3 py-2 font-medium text-sm"}>Metamask has not
+                        install. <a
+                            className={'underline'}
+                            target={"_blank"}
+                            href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn">Click
+                            here</a> to download</div>}
+
                     {
                         address ?
-                            <ButtonComponent className={"!rounded-full !bg-gray-100 !text-gray-700 cursor-default"} disabled>Connected To
+                            <ButtonComponent className={"!rounded-full !bg-gray-100 !text-gray-700 cursor-default"}
+                                             disabled>Connected To
                                 : <b>{`${address.substring(0, 4)}...${address.substring(38)}`}</b></ButtonComponent>
                             :
                             <ButtonComponent className={'!rounded-full'} onClick={connectWallet}>Connect

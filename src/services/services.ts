@@ -4,10 +4,10 @@ import todoSlice, {addTodo, updateData} from "../store/todoSlice";
 import {Dispatch} from "react";
 
 class Services {
-    handleDrag(data:any, todosState:any) {
-        return async (dispatch:Dispatch<any>) => {
+    handleDrag(data, currentState) {
+        return async (dispatch: Dispatch<any>) => {
             try {
-                const newState = structuredClone(todosState)
+                const newState = structuredClone(currentState)
 
                 // Removing information
                 const removingIndex = data.source.index
@@ -18,7 +18,7 @@ class Services {
                 const addingId = data.destination.droppableId
 
                 // Adding item itself
-                const addingItem = structuredClone(todosState[removingId][removingIndex])
+                const addingItem = structuredClone(currentState[removingId][removingIndex])
 
                 // changing its status for e.g = progress to done
                 addingItem.status = addingId
@@ -31,14 +31,8 @@ class Services {
                 newState[addingId].splice(addingIndex, 0, addingItem)
 
                 // save dragging to localStorage
-                const todos = this.getTodosFromLocalStorage().map((item:any) => {
-                    if(item.id === addingItem.id) {
-                        item.status = addingId
-                    }
-                    return item
-                })
-
-              this.updateLocalStorage(todos)
+                const newTodos = [...newState.todos, ...newState.progress, ...newState.done]
+                this.updateLocalStorage(newTodos)
 
                 // let's dispatch
                 dispatch(todoSlice.actions.handleDrag(newState))
@@ -49,7 +43,7 @@ class Services {
         }
     }
 
-    updateLocalStorage(array:any) {
+    updateLocalStorage(array: any) {
         window.localStorage.setItem('todos', JSON.stringify(array))
     }
 
@@ -58,10 +52,10 @@ class Services {
     }
 
     fetchData() {
-        return async (dispatch:Dispatch<any>) => {
+        return async (dispatch: Dispatch<any>) => {
             try {
                 const todos = this.getTodosFromLocalStorage()
-                if(todos.length) {
+                if (todos.length) {
                     dispatch(updateData(todos))
                 }
             } catch (e) {
@@ -70,8 +64,8 @@ class Services {
         }
     }
 
-    addTask(newTask:any) {
-        return async (dispatch:Dispatch<any>) => {
+    addTask(newTask: any) {
+        return async (dispatch: Dispatch<any>) => {
 
             try {
                 let todos = this.getTodosFromLocalStorage()
@@ -80,7 +74,7 @@ class Services {
                 } else {
                     todos = [newTask]
                 }
-                window.localStorage.setItem('todos',  JSON.stringify(todos))
+                window.localStorage.setItem('todos', JSON.stringify(todos))
                 dispatch(addTodo(newTask))
             } catch (e) {
                 console.warn("Error while setting a new task.")
