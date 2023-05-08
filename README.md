@@ -1,4 +1,5 @@
-# To view the project
+# Development
+# Run the following command to start the development server:
 
 ``` yarn install```
 
