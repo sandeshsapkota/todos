@@ -1,0 +1,19 @@
+.form-control {
+    --placeholder-color: #968e8e;
+
+    &::placeholder {
+        /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: var(--placeholder-color);
+        opacity: 1; /* Firefox */
+    }
+
+    &:-ms-input-placeholder {
+        /* Internet Explorer 10-11 */
+        color: var(--placeholder-color);
+    }
+
+    &::-ms-input-placeholder {
+        /* Microsoft Edge */
+        color: var(--placeholder-color);
+    }
+}

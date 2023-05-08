@@ -1,0 +1,23 @@
+body {
+    font: 16px/1.4 'Open Sans', sans-serif;
+    background: #F7F8F9;
+    @apply antialiased;
+}
+
+body::-webkit-scrollbar {
+    width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+    border-radius: 5px;
+}
+
+input[type='number']::-webkit-inner-spin-button {
+    opacity: 1;
+    background: transparent;
+}
