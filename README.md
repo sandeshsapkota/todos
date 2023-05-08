@@ -3,4 +3,4 @@
 
 ``` yarn install```
 
-``` yarn preview```
+``` yarn dev```
